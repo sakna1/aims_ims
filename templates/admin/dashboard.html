@@ -1,0 +1,28 @@
+{% extends "admin/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Admin Dashboard</h2>
+
+<div class="stats-container">
+
+    <div class="stat-box">
+        <h3>{{ total_patients }}</h3>
+        <p>Patients</p>
+    </div>
+
+    <div class="stat-box">
+        <h3>{{ total_staff }}</h3>
+        <p>Staff</p>
+    </div>
+    
+</div>
+
+<h3 class="section-title">Quick Actions</h3>
+
+<div class="actions">
+    <a href="/admin/patients/add" class="btn">Add Patient</a>
+    <a href="/admin/staff/add" class="btn">Add Staff</a>
+    <a href="/admin/categories/add" class="btn">Add Categories</a>
+</div>
+
+{% endblock %}
