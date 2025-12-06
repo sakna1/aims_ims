@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
-
 <body>
 
     <!-- NAVIGATION BAR -->
@@ -21,11 +20,9 @@
             <li><a href="/auth/logout" class="logout-btn">Logout</a></li>
         </ul>
     </nav>
-
     <!-- MAIN CONTENT -->
     <div class="content">
         {% block content %}{% endblock %}
     </div>
-
 </body>
 </html>

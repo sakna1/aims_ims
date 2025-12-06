@@ -42,3 +42,8 @@ def login():
 
     return render_template("login.html")
 
+@auth_bp.route("/logout")
+def logout():
+    AuthService.logout()
+    return redirect(url_for("auth_bp.login"))
+

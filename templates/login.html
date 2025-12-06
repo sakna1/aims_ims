@@ -2,24 +2,30 @@
 <html lang="en">
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
 
-<h2>Login</h2>
+<div class="outer-card">
+    <h2>Login</h2>
 
-{% if error %}
-<p style="color:red;">{{ error }}</p>
-{% endif %}
+    <div class="inner-card">
+        <form method="POST">
 
-<form method="POST">
-    <label>Username</label><br>
-    <input type="text" name="username" required><br><br>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
 
-    <label>Password</label><br>
-    <input type="password" name="password" required><br><br>
+            <label>Username</label>
+            <input type="text" name="username" required>
 
-    <button type="submit">Login</button>
-</form>
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>

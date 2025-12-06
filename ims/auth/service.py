@@ -1,6 +1,7 @@
 from ims.models.user import User
 from ims.models.patient import Patient
 from werkzeug.security import check_password_hash
+from flask import session
 
 class AuthService:
 
@@ -8,7 +9,7 @@ class AuthService:
     def authenticate(username, password):
         # 1. Check User table
         user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
+        if user and check_password_hash(user.password_hash, password):
             return user
         
         # 2. Check Patient table
@@ -19,3 +20,8 @@ class AuthService:
             return patient
 
         return None
+    
+    def logout():
+        """Clear session and log out user."""
+        session.clear()
+        return True

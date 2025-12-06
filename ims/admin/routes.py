@@ -20,12 +20,22 @@ def admin_required(f):
 
 @admin_bp.route("/dashboard")
 def dashboard():
-    # Optional: check if user is logged in and is admin
+    # Check if user is logged in and is admin
     if "role" not in session or session["role"] != "admin":
         flash("Access denied", "danger")
         return redirect(url_for("auth_bp.login"))
 
-    return render_template("admin/dashboard.html")
+    # Fetch counts from service
+    total_patients = AdminService.count_patients()
+    total_staff = AdminService.count_staff()
+    total_categories = AdminService.count_categories()
+
+    return render_template(
+        "admin/dashboard.html",
+        total_patients=total_patients,
+        total_staff=total_staff,
+        total_categories= total_categories
+    )
 
 @admin_bp.route('/patients')
 @admin_required
@@ -34,19 +44,17 @@ def patients_page():
     patients = AdminService.list_patients()
     return render_template('admin/patients.html', patients=patients)
 
-
 @admin_bp.route('/staff')
 @admin_required
 def staff_page():
     staff_list = AdminService.list_staff()
     return render_template('admin/staff.html', staff=staff_list)
 
-
 @admin_bp.route('/categories')
 @admin_required
-def category_page():
-    return render_template('admin/categories.html')
-
+def categories_page():
+    categories = AdminService.list_categories()
+    return render_template('admin/categories.html', categories=categories)
 
 @admin_bp.route("/staff/add", methods=["GET", "POST"])
 @admin_required
@@ -103,8 +111,6 @@ def add_patient():
 
     return render_template("admin/patient_form.html")
 
-
-
 @admin_bp.route("/categories/add", methods=["GET", "POST"])
 @admin_required
 def add_category():
@@ -117,7 +123,7 @@ def add_category():
 
         AdminService.create_category(name)
         flash("Category added successfully", "success")
-        return redirect(url_for("admin_bp.list_categories"))
+        return redirect(url_for("admin_bp.dashboard"))
 
     return render_template("admin/category_form.html", category=None)
 
@@ -139,7 +145,6 @@ def edit_patient(patient_id):
         return redirect(url_for('admin_bp.patients_page'))
 
     return render_template('admin/patient_form.html', patient=patient)
-
 
 @admin_bp.route('/patients/delete/<int:patient_id>', methods=['POST'])
 @admin_required
@@ -171,7 +176,6 @@ def edit_staff(staff_id):
 
     return render_template('admin/staff_form.html', staff=staff)
 
-
 @admin_bp.route('/staff/delete/<int:staff_id>', methods=['POST'])
 @admin_required
 def delete_staff(staff_id):
@@ -183,3 +187,30 @@ def delete_staff(staff_id):
         flash("Staff not found", "warning")
 
     return redirect(url_for('admin_bp.staff_page'))
+
+@admin_bp.route('/categories/edit/<int:category_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_category(category_id):
+    category = AdminService.get_category(category_id)
+
+    if request.method == 'POST':
+        AdminService.update_category(
+            category_id,
+            name=request.form.get('name')
+        )
+        flash("Category updated", "success")
+        return redirect(url_for('admin_bp.categories_page'))
+
+    return render_template('admin/category_form.html', category=category)
+
+@admin_bp.route('/categories/delete/<int:category_id>', methods=['POST'])
+@admin_required
+def delete_category(category_id):
+    success = AdminService.delete_category(category_id)
+
+    if success:
+        flash("Category deleted", "success")
+    else:
+        flash("Category not found", "warning")
+
+    return redirect(url_for('admin_bp.categories_page'))
