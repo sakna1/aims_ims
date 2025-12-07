@@ -90,6 +90,7 @@ def add_staff():
 def add_patient():
     if request.method == "POST":
         username = request.form.get("username")
+        password = request.form.get("password")
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
         address = request.form.get("address")
@@ -102,7 +103,7 @@ def add_patient():
             return render_template("admin/patient_form.html")
 
         AdminService.create_patient(
-            username,first_name, last_name, address, dob,
+            username,password,first_name, last_name, address, dob,
             gender, conditions
         )
 
@@ -135,6 +136,7 @@ def edit_patient(patient_id):
         # Update patient with form data
         AdminService.update_patient(
             patient_id,
+            password = request.form.get("password"),
             first_name=request.form.get('first_name'),
             last_name=request.form.get('last_name'),
             address=request.form.get('address'),

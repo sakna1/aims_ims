@@ -74,7 +74,7 @@ class AdminService:
     # PATIENT MANAGEMENT
     # -------------------------
 
-    def create_patient(username,first_name, last_name, address=None, dob=None,
+    def create_patient(username,password,first_name, last_name, address=None, dob=None,
                        gender=None, conditions=None):
 
         try:
@@ -85,7 +85,7 @@ class AdminService:
 
             patient = Patient(
                 username=username,
-                first_name=first_name,
+                first_name=first_name,               
                 last_name=last_name,
                 address=address,
                 dob=dob_value,
@@ -93,6 +93,8 @@ class AdminService:
                 conditions=conditions,
                 created_by=session.get("user_id")  # logged-in user
             )
+
+            patient.set_password(password)
 
             db.session.add(patient)
             db.session.commit()

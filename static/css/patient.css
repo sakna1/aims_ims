@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f7fa;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #002b80;
+    color: white;
+}
+
+.nav-links a {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    padding: 30px;
+}
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.btn {
+    background: #0066ff;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.big-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.logout-btn {
+    background: #d9534f;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.image-card {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}

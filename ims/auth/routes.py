@@ -20,6 +20,9 @@ def login():
             role = user.role.lower()
             session["role"] = role
 
+            print("LOGGED IN ROLE:", role)
+
+
             # Redirect based on role
             if role in ["admin", "staff"]:
                 return redirect(url_for("admin_bp.dashboard"))
