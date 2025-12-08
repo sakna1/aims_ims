@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Radiologist Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/radiologist.css') }}">   
+</head>
+<body>
+
+    <div class="navbar">
+        <div>Radiologist Portal</div>
+        <div>
+            <span>Logged in: {{ session.get('username') }}</span>
+            <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="{{ url_for('staff_bp.radiologist_dashboard') }}">Dashboard</a>
+        
+    </div>
+
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

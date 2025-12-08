@@ -1,0 +1,29 @@
+{% extends "patient/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Billing & Cost Breakdown</h2>
+
+<div class="info-box">
+
+    <p><strong>Total Cost:</strong> Rs. {{ total_cost }}</p>
+    <p><strong>Payment Status:</strong> {{ payment_status }}</p>
+
+    <h3 class="section-title">Cost Breakdown</h3>
+
+    <table class="table">
+        <tr>
+            <th>Service</th>
+            <th>Cost</th>
+        </tr>
+
+        {% for item in billing_items %}
+        <tr>
+            <td>{{ item.task_name }}</td>
+            <td>Rs. {{ item.cost_amount }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}

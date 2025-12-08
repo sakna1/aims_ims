@@ -1,6 +1,7 @@
 # ims/auth/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from ims.auth.service import AuthService
+from ims.models.patient import Patient
 
 auth_bp = Blueprint("auth_bp", __name__)
 
@@ -31,9 +32,16 @@ def login():
                 return redirect(url_for("doctor_bp.dashboard"))
 
             elif role == "radiologist":
-                return redirect(url_for("radiologist_bp.dashboard"))
+                return redirect(url_for("staff_bp.radiologist_dashboard"))
 
             elif role == "patient":
+                patient = Patient.query.filter_by(username=username).first()
+
+                if patient:
+                    session["patient_id"] = patient.id   # ✅ store patient table ID
+                else:
+                    flash("Patient profile not found", "danger")
+                    return redirect(url_for("auth_bp.login"))
                 return redirect(url_for("patient_bp.dashboard"))
 
             else:

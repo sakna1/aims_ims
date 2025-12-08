@@ -1,5 +1,15 @@
 {% extends "patient/layout.html" %}
 {% block content %}
-<h2>My Profile</h2>
-<p>Basic profile details</p>
+
+<h2 class="page-title">My Profile</h2>
+
+<div class="info-box">
+    <p><strong>Name:</strong> {{ patient.first_name }}</p>
+    <p><strong>Address:</strong> {{ patient.address }}</p>
+    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+    <p><strong>Medical Conditions:</strong> {{ patient.conditions }}</p>
+</div>
+
+<a href="{{ url_for('patient_bp.dashboard') }}" class="btn">Back to Dashboard</a>
+
 {% endblock %}

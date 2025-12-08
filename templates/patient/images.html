@@ -1,0 +1,22 @@
+{% extends "patient/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">My Medical Images sads</h2>
+
+<div class="image-grid">
+    {% for img in images %}
+    <div class="image-card">
+        <img src="{{ url_for('static', filename=img.file_path) }}" alt="Medical Image">
+
+        <p><strong>Type:</strong> {{ img.image_type }}</p>
+        <p><strong>Disease:</strong> {{ img.disease_type }}</p>
+        <p class="timestamp">{{ img.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if images|length == 0 %}
+<p class="empty">No images uploaded yet.</p>
+{% endif %}
+
+{% endblock %}

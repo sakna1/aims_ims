@@ -5,7 +5,6 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
 </head>
-
 <body>
 
 <nav class="navbar">
@@ -13,9 +12,10 @@
     <div class="nav-links">
         <a href="{{ url_for('patient_bp.dashboard') }}">Home</a>
         <a href="{{ url_for('patient_bp.profile') }}">Profile</a>
-        <a href="{{ url_for('patient_bp.view_images') }}">Images</a>
+        <a href="{{ url_for('images_bp.view_images') }}">Images</a>
         <a href="{{ url_for('patient_bp.view_reports') }}">Reports</a>
-        <a href="{{ url_for('patient_bp.billing') }}">Billing</a>
+        <a href="{{ url_for('billing_bp.billing_patient') }}">Billing</a>
+        <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
         
     </div>
 </nav>
