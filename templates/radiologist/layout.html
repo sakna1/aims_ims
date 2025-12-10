@@ -10,15 +10,18 @@
     <div class="navbar">
         <div>Radiologist Portal</div>
         <div>
-            <span>Logged in: {{ session.get('username') }}</span>
+            <span>Welcome  {{ session.get('username') }}</span>
             <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
         </div>
     </div>
 
-    <div class="sidebar">
-        <a href="{{ url_for('staff_bp.radiologist_dashboard') }}">Dashboard</a>
+   <div class="sidebar">
+        <a href="{{ url_for('staff_bp.radiologist_dashboard') }}">Dashboard</a>        
+        <a href="{{ url_for('images_bp.view_images_staff') }}">View Images</a>
+        <a href="{{ url_for('staff_bp.view_reports') }}">View Reports</a>
         
     </div>
+
 
     <div class="main-content">
         {% block content %}{% endblock %}

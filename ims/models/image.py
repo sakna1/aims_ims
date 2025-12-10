@@ -10,9 +10,8 @@ class Image(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('image_categories.id'))
 
     file_path = db.Column(db.String(255), nullable=False)
-    image_type = db.Column(db.String(50))   # MRI, CT, X-ray
-    disease_type = db.Column(db.String(100))  # lung cancer, brain tumor etc.
-
+    image_type = db.Column(db.String(50))     
+    description = db.Column(db.Text) 
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     patient = db.relationship("Patient", backref="images")
@@ -24,7 +23,6 @@ class Image(db.Model):
             "patient_id": self.patient_id,
             "uploaded_by": self.uploaded_by,
             "file_path": self.file_path,
-            "image_type": self.image_type,
-            "disease_type": self.disease_type,
+            "image_type": self.image_type,            
             "timestamp": self.timestamp
         }

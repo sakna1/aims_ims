@@ -1,0 +1,34 @@
+{% extends "radiologist/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Upload Medical Images</h2>
+
+<form method="POST" enctype="multipart/form-data" class="form-container">
+
+    <label>Select Patient</label>
+    <select name="patient_id" required>
+        <option value="">Select Patient</option>
+        {% for p in patients %}
+            <option value="{{ p.id }}">{{ p.first_name }} {{ p.last_name }} (ID: {{ p.id }})</option>
+        {% endfor %}
+    </select>
+
+    <label>Select Images</label>
+    <input type="file" name="images" multiple required>
+
+    <label>Image Type / Modality</label>
+    <select name="image_type" required>
+        <option value="">Select Type</option>
+        
+        {% for cat in categories %}
+            <option value="{{ cat.id }}">{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Description</label>
+    <textarea name="description"></textarea>
+
+    <button type="submit" class="btn">Upload</button>
+</form>
+
+{% endblock %}

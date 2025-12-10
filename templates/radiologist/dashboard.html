@@ -3,11 +3,25 @@
 
 <h2 class="page-title">Radiologist Dashboard</h2>
 
-
+<div class="stats-container">
+    <div class="stat-box">
+        <h3>{{ total_patients }}</h3>
+        <p>Patients</p>
+    </div>
+    <div class="stat-box">
+        <h3>{{ total_images }}</h3>
+        <p>Uploaded Images</p>
+    </div>
+    <div class="stat-box">
+        <h3>{{ total_reports }}</h3>
+        <p>Reports Created</p>
+    </div>
+</div>
 
 <h3 class="section-title">Quick Actions</h3>
 <div class="actions">
-    
+    <a href="{{ url_for('images_bp.upload_images') }}" class="btn">Upload Images</a>
+    <a href="{{ url_for('images_bp.select_image') }}" class="btn">Create Reports</a>    
 </div>
 
 {% endblock %}

@@ -11,6 +11,7 @@ class Report(db.Model):
 
     report_text = db.Column(db.Text, nullable=False)
     diagnosis = db.Column(db.String(255))
+    disease_type = db.Column(db.String(255))  
     status = db.Column(db.String(50), default="Draft")  # Draft or Confirmed
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

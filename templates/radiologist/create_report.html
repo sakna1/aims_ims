@@ -1,0 +1,24 @@
+{% extends "radiologist/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Create Diagnostic Report</h2>
+
+<h4>Patient: {{ image.patient.first_name }} {{ image.patient.last_name }}</h4>
+
+<form method="POST" class="form-container">
+
+    <label>Diagnosis Notes</label>
+    <textarea name="report_text" required>{{ report.report_text if report else '' }}</textarea>
+
+    <label>Diagnosis Type</label>
+    <input 
+        type="text" 
+        name="diagnosis" 
+        placeholder="Eg: Suspected lung mass"
+        value="{{ report.diagnosis if report else '' }}"
+    >
+
+    <button type="submit" class="btn">Save Report</button>
+</form>
+
+{% endblock %}
