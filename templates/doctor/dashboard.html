@@ -1,0 +1,35 @@
+{% extends "doctor/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Doctor Dashboard</h2>
+
+<div class="dashboard-grid">
+
+    <a class="dash-card" href="{{ url_for('doctor_bp.profile') }}">
+        <h3>Patient Profile</h3>
+        <p>View personal & medical details</p>
+    </a>
+
+    <a class="dash-card" href="{{ url_for('doctor_bp.images') }}">
+        <h3>Medical Images</h3>
+        <p>View MRI, CT, X-ray uploads</p>
+    </a>
+
+    <a class="dash-card" href="{{ url_for('doctor_bp.reports') }}">
+        <h3>Radiology Reports</h3>
+        <p>Review reports from radiologist</p>
+    </a>
+
+    <a class="dash-card" href="{{ url_for('doctor_bp.notes') }}">
+        <h3>Clinical Notes</h3>
+        <p>Add your own notes & observations</p>
+    </a>
+
+    <a class="dash-card" href="{{ url_for('doctor_bp.history') }}">
+        <h3>Visit History</h3>
+        <p>See patient visit records</p>
+    </a>
+
+</div>
+
+{% endblock %}

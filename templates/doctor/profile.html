@@ -1,0 +1,20 @@
+{% extends "doctor/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Patient Profile</h2>
+
+<div class="form-container">
+    <label>Name:</label>
+    <p>{{ patient.name }}</p>
+
+    <label>Address:</label>
+    <p>{{ patient.address }}</p>
+
+    <label>Medical Conditions:</label>
+    <p>{{ patient.medical_conditions }}</p>
+
+    <label>Diagnosis History:</label>
+    <p>{{ patient.diagnosis_history }}</p>
+</div>
+
+{% endblock %}

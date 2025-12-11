@@ -1,0 +1,22 @@
+{% extends "doctor/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Patient Medical Images</h2>
+
+<table class="table">
+    <tr>
+        <th>Image</th>
+        <th>Type</th>
+        <th>Uploaded On</th>
+    </tr>
+
+    {% for img in images %}
+    <tr>
+        <td><img src="{{ img.url }}" class="thumb"></td>
+        <td>{{ img.type }}</td>
+        <td>{{ img.timestamp }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
