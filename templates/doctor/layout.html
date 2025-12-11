@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Doctor Portal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
+   
 </head>
 
 <body>
@@ -11,16 +12,12 @@
     <h1>Doctor Portal</h1>
     <div class="nav-links">
         <a href="{{ url_for('staff_bp.doctor_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('staff_bp.profile') }}">Patient Profile</a>
+        <a href="{{ url_for('staff_bp.view_images') }}">View Scan</a>
+        <a href="{{ url_for('staff_bp.doctor_view_reports') }}">View Reports</a>
         <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
     </div>
 </nav>
-
-<div class="sidebar">
-    <a href="{{ url_for('staff_bp.profile') }}">View Patient Profile</a>
-    <a href="{{ url_for('staff_bp.images') }}">Patient Images</a>
-    <a href="{{ url_for('staff_bp.reports') }}">Radiology Reports</a>   
-    <a href="{{ url_for('staff_bp.history') }}">Visit History</a>
-</div>
 
 <div class="main-content">
     {% block content %}

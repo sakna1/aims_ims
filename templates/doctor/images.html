@@ -3,20 +3,38 @@
 
 <h2 class="page-title">Patient Medical Images</h2>
 
-<table class="table">
-    <tr>
-        <th>Image</th>
-        <th>Type</th>
-        <th>Uploaded On</th>
-    </tr>
+<!-- Search Form -->
+<form method="GET" action="{{ url_for('staff_bp.view_images') }}" class="search-form">
+    <input type="text" name="query" placeholder="Search by Patient ID or Name" class="search-input" value="{{ request.args.get('query', '') }}">
+    <button type="submit" class="btn">Search</button>
+</form>
 
-    {% for img in images %}
-    <tr>
-        <td><img src="{{ img.url }}" class="thumb"></td>
-        <td>{{ img.type }}</td>
-        <td>{{ img.timestamp }}</td>
-    </tr>
-    {% endfor %}
-</table>
+{% if patient %}
+    <h3 class="sub-title">Patient: {{ patient.name }} (ID: {{ patient.id }})</h3>
+
+    {% if images %}
+    <table class="table">
+        <tr>
+            <th>Image</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Uploaded By</th>
+            <th>Uploaded On</th>
+        </tr>
+
+        {% for img in images %}
+        <tr>
+            <td><img src="{{ url_for('static', filename=img.file_path) }}" class="thumb"></td>
+            <td>{{ img.image_type }}</td>
+            <td>{{ img.description }}</td>
+            <td>{{ img.user.username }}</td>
+            <td>{{ img.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No medical images found for this patient.</p>
+    {% endif %}
+{% endif %}
 
 {% endblock %}

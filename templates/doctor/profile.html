@@ -5,16 +5,19 @@
 
 <div class="form-container">
     <label>Name:</label>
-    <p>{{ patient.name }}</p>
+    <p>{{ patient.first_name }} {{ patient.last_name }}</p>
 
     <label>Address:</label>
     <p>{{ patient.address }}</p>
 
     <label>Medical Conditions:</label>
-    <p>{{ patient.medical_conditions }}</p>
+    <p>{{ patient.conditions }}</p>
 
-    <label>Diagnosis History:</label>
-    <p>{{ patient.diagnosis_history }}</p>
+    <label>Gender:</label>
+    <p>{{ patient.gender }}</p>
+
+    <label>Date of Birth:</label>
+    <p>{{ patient.dob }}</p>
 </div>
 
 {% endblock %}

@@ -29,7 +29,7 @@ def login():
                 return redirect(url_for("admin_bp.dashboard"))
 
             elif role == "doctor":
-                return redirect(url_for("doctor_bp.dashboard"))
+                return redirect(url_for("staff_bp.doctor_dashboard"))
 
             elif role == "radiologist":
                 return redirect(url_for("staff_bp.radiologist_dashboard"))

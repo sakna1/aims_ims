@@ -1,7 +1,7 @@
 # ims/staff/routes.py
 from flask import Blueprint, render_template,request,redirect, url_for, flash, session
 from ims.models import Patient, Image, Report  # adjust imports if needed
-from ims.staff.service import StaffService
+from ims.staff.service import StaffService 
 
 staff_bp = Blueprint(
     "staff_bp",
@@ -23,14 +23,18 @@ def staff_required(f):
     return wrapper
 
 
-@staff_bp.route("/dashboard")
+# Radiologist Dashboard
+@staff_bp.route("/radiologist/dashboard")
 @staff_required
 def radiologist_dashboard():
-    
-    return render_template(
-        "radiologist/dashboard.html",
-       
-    )
+    return render_template("radiologist/dashboard.html")
+
+
+# Doctor Dashboard
+@staff_bp.route("/doctor/dashboard")
+@staff_required
+def doctor_dashboard():
+    return render_template("doctor/dashboard.html")
 
 @staff_bp.route("/create-report/<int:image_id>", methods=["GET", "POST"])
 def create_report(image_id):
@@ -84,6 +88,88 @@ def view_reports():
         reports=reports
     )
 
+
+
+
+
+@staff_bp.route("/profile", methods=["GET"])
+@staff_required
+def profile():
+    q = request.args.get("q")
+    pid = request.args.get("id")
+
+    # if patient ID passed → show profile
+    if pid:
+        patient = StaffService.get_patient_by_id(pid)
+        if not patient:
+            flash("Patient not found", "danger")
+            return redirect(url_for('staff_bp.profile'))
+
+        return render_template("doctor/profile.html", patient=patient)
+
+    # if search query passed
+    if q:
+        patients = StaffService.search_patients(q)
+
+        if len(patients) == 0:
+            return render_template("doctor/profile_search.html",
+                                   message="No patients found.")
+
+        return render_template("doctor/profile_search.html",
+                               patients=patients)
+
+    # initial page
+    return render_template("doctor/profile_search.html")
+
+
+@staff_bp.route("/view-images", methods=["GET"])
+def view_images():
+    query = request.args.get("query")
+
+    patient = None
+    images = []
+
+    if query:
+        # Search patient by ID or name
+        patient = StaffService.find_by_id_or_name(query)
+
+        if patient:
+            images = StaffService.get_images_by_patient(patient.id)
+
+    return render_template(
+        "doctor/images.html",
+        patient=patient,
+        images=images
+    )
+
+@staff_bp.route("/reports", methods=["GET"])
+def doctor_view_reports():
+    query = request.args.get("query")
+    patient = None
+    reports = []
+
+    if query:
+        patient = StaffService.find_by_id_or_name(query)
+        if patient:
+            reports = StaffService.get_reports_by_patient(patient.id)
+
+    return render_template(
+        "doctor/reports.html",
+        patient=patient,
+        reports=reports
+    )
+
+
+@staff_bp.route("/update-report/<int:report_id>", methods=["POST"])
+def doctor_update_report(report_id):
+    disease_type = request.form.get("disease_type")
+    diagnosis = request.form.get("diagnosis")
+    status = request.form.get("status")
+
+    StaffService.update_report(report_id, disease_type, diagnosis, status)
+    flash("Report updated successfully!", "success")
+
+    return redirect(request.referrer)
 
 
 
