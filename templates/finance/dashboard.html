@@ -1,0 +1,13 @@
+{% extends 'finance/layout.html' %}
+
+{% block content %}
+<h2>Finance Dashboard</h2>
+
+<div class="menu-links">
+    <a href="{{ url_for('billing_bp.add_billing') }}">➕ Add Billing Record</a>
+    <a href="{{ url_for('billing_bp.view_patients') }}">📄 View All Patients & Totals</a>
+    <a href="{{ url_for('billing_bp.search_patient') }}">🔍 Search Billing by Patient</a>
+
+   
+</div>
+{% endblock %}

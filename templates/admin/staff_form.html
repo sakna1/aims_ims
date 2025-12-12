@@ -20,6 +20,7 @@
         <option value="doctor" {{ 'selected' if staff and staff.role=='doctor' else '' }}>Doctor</option>
         <option value="radiologist" {{ 'selected' if staff and staff.role=='radiologist' else '' }}>Radiologist</option>       
         <option value="admin" {{ 'selected' if staff and staff.role=='admin' else '' }}>Admin</option>
+        <option value="finance" {{ 'selected' if staff and staff.role=='finance' else '' }}>Finance</option>
     </select>
 
     <label>Password {{ '(Leave blank to keep same)' if staff else '' }}</label>

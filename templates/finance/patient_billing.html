@@ -1,0 +1,27 @@
+{% extends 'finance/layout.html' %}
+
+{% block content %}
+<h2>Billing Records for Patient {{ patient_id }}</h2>
+
+<table>
+    <tr>
+        <th>Task</th>
+        <th>Cost (LKR)</th>
+        <th>Timestamp</th>
+    </tr>
+
+    {% for record in records %}
+    <tr>
+        <td>{{ record.task_name }}</td>
+        <td>{{ record.cost_amount }}</td>
+        <td>{{ record.timestamp }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total: LKR {{ total }}</h3>
+
+<a href="{{ url_for('billing_bp.generate_invoice', patient_id=patient_id) }}">
+    <button>Download Invoice</button>
+</a>
+{% endblock %}

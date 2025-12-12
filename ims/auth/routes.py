@@ -33,6 +33,9 @@ def login():
 
             elif role == "radiologist":
                 return redirect(url_for("staff_bp.radiologist_dashboard"))
+            
+            elif role == "finance":
+                return redirect(url_for("staff_bp.finance_dashboard"))
 
             elif role == "patient":
                 patient = Patient.query.filter_by(username=username).first()

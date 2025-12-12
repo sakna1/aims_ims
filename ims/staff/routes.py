@@ -36,6 +36,12 @@ def radiologist_dashboard():
 def doctor_dashboard():
     return render_template("doctor/dashboard.html")
 
+# finance Dashboard
+@staff_bp.route("/finance/dashboard")
+@staff_required
+def finance_dashboard():
+    return render_template("finance/dashboard.html")
+
 @staff_bp.route("/create-report/<int:image_id>", methods=["GET", "POST"])
 def create_report(image_id):
     user_id = session.get("user_id")
