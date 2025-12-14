@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, flash, redirect, url_for,request,send_from_directory
 from ims.images.service import ImageService
+from ims.patients.service import PatientService
 from ims.patients.routes import patient_required
 from ims.staff.routes import staff_required
 
@@ -8,7 +9,6 @@ images_bp = Blueprint("images_bp", __name__)
 @images_bp.route("/")
 @patient_required
 def view_images():
-
     patient_id = session.get("patient_id")
 
     if not patient_id:
@@ -16,13 +16,12 @@ def view_images():
         return redirect(url_for("patient_bp.dashboard"))
 
     images = ImageService.get_images_by_patient_id(patient_id)
-
     return render_template("patient/images.html", images=images)
 
 @images_bp.route("/upload-images", methods=["GET", "POST"])
 @staff_required
 def upload_images():
-    patients = ImageService.get_all_patients()
+    patients = PatientService.get_all_patients()
     categories = ImageService.get_all_categories()  # 🔥 NEW — load categories
 
     if request.method == "POST":
@@ -54,7 +53,6 @@ def upload_images():
         categories=categories     
     )
 
-
 @images_bp.route("/my-images")
 @staff_required
 def view_images_staff():
@@ -76,8 +74,11 @@ def select_image():
     return render_template("radiologist/select_image.html", images=images)
 
 @images_bp.route("/view/<filename>")
-@staff_required
 def view_file(filename):
+    if not session.get("user_id") and not session.get("patient_id"):
+        flash("Please login first!", "danger")
+        return redirect(url_for("auth_bp.login"))
+
     folder = r"D:\sakna\Sakna Perera\Lec\Software Architecture and Programming\CW2\AIMS\abc_ims\uploads"
     return send_from_directory(folder, filename)
 

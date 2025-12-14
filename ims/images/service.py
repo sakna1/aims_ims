@@ -3,14 +3,12 @@ from werkzeug.utils import secure_filename
 from ims.models import Image, Patient ,ImageCategory
 from database.db import db
 from flask import url_for
+from ims.utils.cloud_storage import save_file
 
 class ImageService:
 
     @staticmethod
     def get_images_by_patient_id(patient_id):
-        """
-        Return all medical images uploaded under a specific patient.
-        """
         return Image.query.filter_by(patient_id=patient_id).order_by(Image.timestamp.desc()).all()
     
     @staticmethod
@@ -26,7 +24,7 @@ class ImageService:
             filename = secure_filename(img.filename)
 
             file_path = os.path.join(upload_folder, filename)
-            img.save(file_path)
+            filename = save_file(img)
 
             db_path = url_for("images_bp.view_file", filename=filename)
 
@@ -47,11 +45,7 @@ class ImageService:
     @staticmethod
     def get_uploaded_images(staff_id):    
        return Image.query.filter_by(uploaded_by=staff_id).order_by(Image.timestamp.desc()).all()
-    
-    @staticmethod
-    def get_all_patients():
-        return Patient.query.all()
-    
+        
     @staticmethod
     def get_all_images():
       return Image.query.order_by(Image.id.desc()).all()
@@ -87,7 +81,8 @@ class ImageService:
         from ims.models import Report  
         return Image.query.filter(
             ~Image.id.in_(db.session.query(Report.image_id))
-        ).all()
+        ).all()   
+    
 
 
  

@@ -9,9 +9,10 @@
 
     <label>Task Name</label>
     <select name="task_name" required>
-        <option value="Image Upload">Image Upload</option>
-        <option value="Diagnosis">Diagnosis</option>
-        <option value="Report Creation">Report Creation</option>
+        <option value="">Select Type</option>
+        {% for cat in categories %}
+            <option value="{{ cat.name }}">{{ cat.name }}</option>
+        {% endfor %}
     </select>
 
     <label>Cost Amount (LKR)</label>
@@ -19,4 +20,5 @@
 
     <button type="submit">Add Record</button>
 </form>
+
 {% endblock %}

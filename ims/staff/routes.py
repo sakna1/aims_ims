@@ -2,6 +2,8 @@
 from flask import Blueprint, render_template,request,redirect, url_for, flash, session
 from ims.models import Patient, Image, Report  # adjust imports if needed
 from ims.staff.service import StaffService 
+from ims.images.service import ImageService
+from ims.patients.service import PatientService
 
 staff_bp = Blueprint(
     "staff_bp",
@@ -42,6 +44,9 @@ def doctor_dashboard():
 def finance_dashboard():
     return render_template("finance/dashboard.html")
 
+
+# radiologist routes
+
 @staff_bp.route("/create-report/<int:image_id>", methods=["GET", "POST"])
 def create_report(image_id):
     user_id = session.get("user_id")
@@ -78,7 +83,6 @@ def create_report(image_id):
         report=report
     )
 
-
 @staff_bp.route("/view_reports")
 def view_reports():
     user_id = session.get("user_id")
@@ -94,9 +98,7 @@ def view_reports():
         reports=reports
     )
 
-
-
-
+# doctor routes
 
 @staff_bp.route("/profile", methods=["GET"])
 @staff_required
@@ -106,7 +108,7 @@ def profile():
 
     # if patient ID passed → show profile
     if pid:
-        patient = StaffService.get_patient_by_id(pid)
+        patient = PatientService.get_patient_by_id(pid)
         if not patient:
             flash("Patient not found", "danger")
             return redirect(url_for('staff_bp.profile'))
@@ -115,7 +117,7 @@ def profile():
 
     # if search query passed
     if q:
-        patients = StaffService.search_patients(q)
+        patients = PatientService.search_patients(q)
 
         if len(patients) == 0:
             return render_template("doctor/profile_search.html",
@@ -127,7 +129,6 @@ def profile():
     # initial page
     return render_template("doctor/profile_search.html")
 
-
 @staff_bp.route("/view-images", methods=["GET"])
 def view_images():
     query = request.args.get("query")
@@ -137,10 +138,10 @@ def view_images():
 
     if query:
         # Search patient by ID or name
-        patient = StaffService.find_by_id_or_name(query)
+        patient = PatientService.find_by_id_or_name(query)
 
         if patient:
-            images = StaffService.get_images_by_patient(patient.id)
+            images = ImageService.get_images_by_patient_id(patient.id)
 
     return render_template(
         "doctor/images.html",
@@ -155,7 +156,7 @@ def doctor_view_reports():
     reports = []
 
     if query:
-        patient = StaffService.find_by_id_or_name(query)
+        patient = PatientService.find_by_id_or_name(query)
         if patient:
             reports = StaffService.get_reports_by_patient(patient.id)
 
@@ -164,7 +165,6 @@ def doctor_view_reports():
         patient=patient,
         reports=reports
     )
-
 
 @staff_bp.route("/update-report/<int:report_id>", methods=["POST"])
 def doctor_update_report(report_id):

@@ -9,12 +9,11 @@
 </form>
 
 {% if patient %}
-<h3>Patient: {{ patient.name }}</h3>
+<h3>Patient: {{ patient.first_name }}</h3>
 {% endif %}
 
 <table class="table">
-    <tr>
-        <th>Image</th>
+    <tr>       
         <th>Report Text</th>
         <th>Disease Type</th>
         <th>Diagnosis</th>
@@ -24,10 +23,7 @@
 
     {% for r in reports %}
     <tr>
-        <td>
-            <img src="{{ r.image.file_path }}" class="thumb">
-        </td>
-
+       
         <td>{{ r.report_text }}</td>
 
         <form method="POST" action="{{ url_for('staff_bp.doctor_update_report', report_id=r.id) }}">

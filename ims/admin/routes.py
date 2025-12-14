@@ -1,6 +1,8 @@
 # ims/admin/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash,session
 from ims.admin.service import AdminService
+from ims.patients.service import PatientService
+from ims.staff.service import StaffService 
 
 admin_bp = Blueprint(
     "admin_bp",
@@ -9,14 +11,12 @@ admin_bp = Blueprint(
     template_folder="templates"
 )
 
-# NOTE: Replace these TODO comments with real auth checks later.
 def admin_required(f):
-    # TODO: decorate with real auth check (current_user.role == 'admin')
+    
     def wrapper(*args, **kwargs):
         return f(*args, **kwargs)
     wrapper.__name__ = f.__name__
     return wrapper
-
 
 @admin_bp.route("/dashboard")
 def dashboard():
@@ -39,15 +39,14 @@ def dashboard():
 
 @admin_bp.route('/patients')
 @admin_required
-def patients_page():
-    # Fetch all patients using AdminService
-    patients = AdminService.list_patients()
+def patients_page():   
+    patients = PatientService.list_patients()
     return render_template('admin/patients.html', patients=patients)
 
 @admin_bp.route('/staff')
 @admin_required
 def staff_page():
-    staff_list = AdminService.list_staff()
+    staff_list = StaffService.list_staff()
     return render_template('admin/staff.html', staff=staff_list)
 
 @admin_bp.route('/categories')
@@ -72,7 +71,7 @@ def add_staff():
             return render_template("admin/staff_form.html")
 
         # Create staff
-        AdminService.create_staff(
+        StaffService.create_staff(
             username=username,
             password=password,
             full_name=full_name,
@@ -102,7 +101,7 @@ def add_patient():
             flash("Please provide patient name", "danger")
             return render_template("admin/patient_form.html")
 
-        AdminService.create_patient(
+        PatientService.create_patient(
             username,password,first_name, last_name, address, dob,
             gender, conditions
         )
@@ -131,10 +130,10 @@ def add_category():
 @admin_bp.route('/patients/edit/<int:patient_id>', methods=['GET', 'POST'])
 @admin_required
 def edit_patient(patient_id):
-    patient = AdminService.get_patient(patient_id)
+    patient = PatientService.get_patient(patient_id)
     if request.method == 'POST':
         # Update patient with form data
-        AdminService.update_patient(
+        PatientService.update_patient(
             patient_id,
             password = request.form.get("password"),
             first_name=request.form.get('first_name'),
@@ -151,7 +150,7 @@ def edit_patient(patient_id):
 @admin_bp.route('/patients/delete/<int:patient_id>', methods=['POST'])
 @admin_required
 def delete_patient(patient_id):
-    success = AdminService.delete_patient(patient_id)
+    success = PatientService.delete_patient(patient_id)
     if success:
         flash("Patient deleted", "success")
     else:
@@ -161,10 +160,10 @@ def delete_patient(patient_id):
 @admin_bp.route('/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
 @admin_required
 def edit_staff(staff_id):
-    staff = AdminService.get_staff_by_id(staff_id)
+    staff = StaffService.get_staff_by_id(staff_id)
 
     if request.method == 'POST':
-        AdminService.update_staff(
+        StaffService.update_staff(
             staff_id,
             username=request.form.get('username'),
             full_name=request.form.get('full_name'),
@@ -181,7 +180,7 @@ def edit_staff(staff_id):
 @admin_bp.route('/staff/delete/<int:staff_id>', methods=['POST'])
 @admin_required
 def delete_staff(staff_id):
-    success = AdminService.delete_staff(staff_id)
+    success = StaffService.delete_staff(staff_id)
 
     if success:
         flash("Staff member deleted", "success")

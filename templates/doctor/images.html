@@ -5,17 +5,22 @@
 
 <!-- Search Form -->
 <form method="GET" action="{{ url_for('staff_bp.view_images') }}" class="search-form">
-    <input type="text" name="query" placeholder="Search by Patient ID or Name" class="search-input" value="{{ request.args.get('query', '') }}">
+    <input type="text" name="query"
+           placeholder="Search by Patient ID or Name"
+           class="search-input"
+           value="{{ request.args.get('query', '') }}">
     <button type="submit" class="btn">Search</button>
 </form>
 
 {% if patient %}
-    <h3 class="sub-title">Patient: {{ patient.name }} (ID: {{ patient.id }})</h3>
+    <h3 class="sub-title">
+        Patient: {{ patient.name }} (ID: {{ patient.id }})
+    </h3>
 
     {% if images %}
     <table class="table">
         <tr>
-            <th>Image</th>
+            <th>Preview</th>
             <th>Type</th>
             <th>Description</th>
             <th>Uploaded By</th>
@@ -24,7 +29,15 @@
 
         {% for img in images %}
         <tr>
-            <td><img src="{{ url_for('static', filename=img.file_path) }}" class="thumb"></td>
+            <td>
+                {% if img.file_path.endswith('.pdf') %}
+                    <a href="{{ img.file_path }}" target="_blank" class="btn btn-sm">
+                        View PDF
+                    </a>
+                {% else %}
+                    <img src="{{ img.file_path }}" class="thumb">
+                {% endif %}
+            </td>
             <td>{{ img.image_type }}</td>
             <td>{{ img.description }}</td>
             <td>{{ img.user.username }}</td>

@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash,session
 from ims.billing.service import BillingService
+from ims.images.service import ImageService
+
 from ims.patients.routes import patient_required  # reuse decorator
 
 billing_bp = Blueprint(
@@ -14,7 +16,7 @@ def billing_patient():
 
     patient_id = session.get("patient_id")
 
-    billing_items = BillingService.get_billing_by_patient_id(patient_id)
+    billing_items = BillingService.get_billing_by_patient(patient_id)
     total_cost = BillingService.calculate_total_cost(patient_id)
 
     payment_status = "Pending" if total_cost > 0 else "Completed"
@@ -28,6 +30,7 @@ def billing_patient():
 
 @billing_bp.route("/add-billing", methods=["GET", "POST"])
 def add_billing():
+    categories = ImageService.get_all_categories()
     if request.method == "POST":
         patient_id = request.form["patient_id"]
         task_name = request.form["task_name"]
@@ -38,8 +41,7 @@ def add_billing():
         flash("Billing record added!", "success")
         return redirect(url_for("staff_bp.finance_dashboard"))
 
-    return render_template("finance/add_billing.html")
-
+    return render_template("finance/add_billing.html" ,categories=categories)
 
 @billing_bp.route("/search", methods=["GET", "POST"])
 def search_patient():
@@ -65,7 +67,6 @@ def search_patient():
 def view_patients():
     patients = BillingService.get_all_patients_summary()
     return render_template("finance/all_patients.html", patients=patients)
-
 
 @billing_bp.route("/patient/<int:patient_id>")
 def view_patient_billing(patient_id):

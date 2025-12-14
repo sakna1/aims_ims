@@ -1,16 +1,13 @@
 # ims/staff/service.py
 import os
 from werkzeug.utils import secure_filename
-from ims.models import Patient,Report,Image
+from ims.models import Patient,Report,Image,User
 from database.db import db
-from sqlalchemy import or_
+from sqlalchemy.exc import SQLAlchemyError
 
 class StaffService:
 
-    @staticmethod
-    def get_all_patients():
-        return Patient.query.all()
-    
+       
     @staticmethod
     def save_report(patient_id, image_id, created_by, report_text, diagnosis):
         report = Report.query.filter_by(image_id=image_id).first()
@@ -33,8 +30,6 @@ class StaffService:
         db.session.commit()
         return report
 
-
-    # Get all reports created by radiologist
     @staticmethod
     def get_reports_by_radiologist(user_id):
         return (
@@ -51,36 +46,6 @@ class StaffService:
     @staticmethod
     def get_report_by_image(image_id):
         return Report.query.filter_by(image_id=image_id).first()     
-
-    @staticmethod
-    def get_patient(patient_id):
-        return Patient.query.get(patient_id)
-    
-    @staticmethod
-    def search_patients(query):
-        if query.isdigit():
-            return Patient.query.filter(Patient.id == int(query)).all()
-
-        return Patient.query.filter(
-            or_(
-                Patient.first_name.ilike(f"%{query}%"),
-                Patient.last_name.ilike(f"%{query}%")
-            )
-        ).all()
-
-    @staticmethod
-    def get_patient_by_id(pid):
-        return Patient.query.filter_by(id=pid).first()
-    
-    @staticmethod
-    def find_by_id_or_name(query):
-        if query.isdigit():
-            return Patient.query.filter_by(id=int(query)).first()
-        return Patient.query.filter(Patient.name.ilike(f"%{query}%")).first()
-    
-    @staticmethod
-    def get_images_by_patient(patient_id):
-        return Image.query.filter_by(patient_id=patient_id).order_by(Image.timestamp.desc()).all()
 
     @staticmethod
     def get_reports_by_patient(patient_id):
@@ -108,3 +73,62 @@ class StaffService:
             report.status = status
             db.session.commit()
         return report
+    
+    #admin
+
+    @staticmethod
+    def create_staff(username, password, full_name, email, role):
+        try:
+            user = User(
+                username=username,
+                full_name=full_name,
+                email=email,
+                role=role
+            )
+            user.set_password(password)
+
+            db.session.add(user)
+            db.session.commit()
+            return user
+
+        except SQLAlchemyError:
+            db.session.rollback()
+            return None
+
+    @staticmethod
+    def update_staff(user_id, **kwargs):
+        staff = User.query.get(user_id)
+        if not staff:
+            return None
+
+        for field, value in kwargs.items():
+            if hasattr(staff, field) and value is not None:
+                setattr(staff, field, value)
+
+        try:
+            db.session.commit()
+            return staff
+        except:
+            db.session.rollback()
+            return None
+
+    @staticmethod
+    def delete_staff(user_id):
+        staff = User.query.get(user_id)
+        if not staff:
+            return False
+        try:
+            db.session.delete(staff)
+            db.session.commit()
+            return True
+        except:
+            db.session.rollback()
+            return False
+
+    @staticmethod
+    def list_staff():
+        return User.query.order_by(User.created_at.desc()).all()
+
+    @staticmethod
+    def get_staff_by_id(user_id):
+        return User.query.get(user_id)

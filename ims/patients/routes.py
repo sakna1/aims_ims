@@ -20,7 +20,6 @@ def patient_required(f):
     wrapper.__name__ = f.__name__
     return wrapper
 
-
 @patient_bp.route("/dashboard")
 @patient_required
 def dashboard():
@@ -33,7 +32,6 @@ def dashboard():
 @patient_required
 def profile():
     patient_id = session.get("patient_id")
-
     patient = PatientService.get_patient_by_id(patient_id)
 
     if not patient:
@@ -42,24 +40,15 @@ def profile():
 
     return render_template("patient/profile.html", patient=patient)
 
-
-@patient_bp.route("/view_reports")
-@patient_required
-def view_reports():
-    return render_template("patient/reports.html")
-
 @patient_bp.route("/reports")
 @patient_required
-def reports_page():
-
+def view_reports():
     patient_id = session.get("patient_id")
-
     if not patient_id:
         flash("Patient session missing!", "danger")
         return redirect(url_for("patient_bp.dashboard"))
 
     reports = PatientService.get_reports_by_patient_id(patient_id)
-
     return render_template(
         "patient/reports.html",
         reports=reports
