@@ -1,4 +1,7 @@
+import os
+
 from flask import Flask, render_template
+from database.db import db
 
 # Import blueprints
 from ims.auth.routes import auth_bp
@@ -11,6 +14,13 @@ from ims.staff.routes import staff_bp
 
 def create_app():
     app = Flask(__name__)
+
+    # Database config – Neon connection string must be in env var DATABASE_URL
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # Init SQLAlchemy
+    db.init_app(app)
 
     # Register Blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -30,4 +40,5 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
+    # For local dev; in Cloud Run gunicorn will run `app:app`
     app.run(host="0.0.0.0", port=8080)
