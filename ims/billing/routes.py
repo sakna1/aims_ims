@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash,session
 from ims.billing.service import BillingService
 from ims.images.service import ImageService
+from ims.patients.service import PatientService
 
 from ims.patients.routes import patient_required  # reuse decorator
 
@@ -31,6 +32,8 @@ def billing_patient():
 @billing_bp.route("/add-billing", methods=["GET", "POST"])
 def add_billing():
     categories = ImageService.get_all_categories()
+    patients = PatientService.get_all_patients()
+
     if request.method == "POST":
         patient_id = request.form["patient_id"]
         task_name = request.form["task_name"]
@@ -41,7 +44,7 @@ def add_billing():
         flash("Billing record added!", "success")
         return redirect(url_for("staff_bp.finance_dashboard"))
 
-    return render_template("finance/add_billing.html" ,categories=categories)
+    return render_template("finance/add_billing.html" ,categories=categories,patients=patients)
 
 @billing_bp.route("/search", methods=["GET", "POST"])
 def search_patient():

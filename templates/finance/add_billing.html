@@ -4,8 +4,16 @@
 <h2>Add Billing Record</h2>
 
 <form method="POST">
-    <label>Patient ID</label>
-    <input type="number" name="patient_id" required>
+
+    <label>Patient</label>
+    <select name="patient_id" required>
+        <option value="">Select Patient</option>
+        {% for patient in patients %}
+            <option value="{{ patient.id }}">
+                {{ patient.id }} - {{ patient.first_name }}
+            </option>
+        {% endfor %}
+    </select>
 
     <label>Task Name</label>
     <select name="task_name" required>

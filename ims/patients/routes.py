@@ -54,3 +54,14 @@ def view_reports():
         reports=reports
     )
 
+@patient_bp.route("/")
+@patient_required
+def view_images():
+    patient_id = session.get("patient_id")
+
+    if not patient_id:
+        flash("Patient session missing!", "danger")
+        return redirect(url_for("patient_bp.dashboard"))
+
+    images = ImageService.get_images_by_patient_id(patient_id)
+    return render_template("patient/images.html", images=images)

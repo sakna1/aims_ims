@@ -6,17 +6,6 @@ from ims.staff.routes import staff_required
 
 images_bp = Blueprint("images_bp", __name__)
 
-@images_bp.route("/")
-@patient_required
-def view_images():
-    patient_id = session.get("patient_id")
-
-    if not patient_id:
-        flash("Patient session missing!", "danger")
-        return redirect(url_for("patient_bp.dashboard"))
-
-    images = ImageService.get_images_by_patient_id(patient_id)
-    return render_template("patient/images.html", images=images)
 
 @images_bp.route("/upload-images", methods=["GET", "POST"])
 @staff_required

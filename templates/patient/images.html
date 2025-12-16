@@ -34,10 +34,7 @@
                  alt="Medical Image"
                  class="scan-image">
 
-        {% endif %}
-
-        <p><strong>Type:</strong> {{ img.image_type }}</p>
-        <p><strong>Disease:</strong> {{ img.disease_type }}</p>
+        {% endif %}        
         <p class="timestamp">
             {{ img.timestamp.strftime('%Y-%m-%d %H:%M') }}
         </p>

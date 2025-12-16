@@ -4,6 +4,7 @@ from ims.models import Patient, Image, Report  # adjust imports if needed
 from ims.staff.service import StaffService 
 from ims.images.service import ImageService
 from ims.patients.service import PatientService
+from ims.admin.service import AdminService
 
 staff_bp = Blueprint(
     "staff_bp",
@@ -28,8 +29,13 @@ def staff_required(f):
 # Radiologist Dashboard
 @staff_bp.route("/radiologist/dashboard")
 @staff_required
-def radiologist_dashboard():
-    return render_template("radiologist/dashboard.html")
+def radiologist_dashboard():     
+    total_patients = AdminService.total_patients_count()
+    total_images = ImageService.get_all_images_count()
+    total_reports = StaffService.get_all_reports()
+    return render_template("radiologist/dashboard.html",total_patients=total_patients,
+        total_images=total_images,
+        total_reports=total_reports)
 
 
 # Doctor Dashboard

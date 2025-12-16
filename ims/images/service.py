@@ -1,6 +1,6 @@
 import os
 from werkzeug.utils import secure_filename
-from ims.models import Image, Patient ,ImageCategory
+from ims.models import Image,ImageCategory ,Report
 from database.db import db
 from flask import url_for
 from ims.utils.cloud_storage import save_file
@@ -51,6 +51,10 @@ class ImageService:
       return Image.query.order_by(Image.id.desc()).all()
     
     @staticmethod
+    def get_all_images_count():
+      return db.session.query(db.func.count(Image.id)).scalar() or 0
+    
+    @staticmethod
     def delete_image(image_id):
         image = Image.query.get(image_id)
         if not image:
@@ -77,11 +81,20 @@ class ImageService:
         return ImageCategory.query.all()
     
     @staticmethod
-    def get_images_without_report():
-        from ims.models import Report  
+    def get_images_without_report():       
         return Image.query.filter(
             ~Image.id.in_(db.session.query(Report.image_id))
-        ).all()   
+        ).all()       
+
+    @staticmethod
+    def images_name():       
+        return (
+            db.session.query(Report)
+            .join(ImageCategory)
+            .order_by(Report.image_id.desc())
+            .all()
+        )
+
     
 
 

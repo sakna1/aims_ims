@@ -74,6 +74,10 @@ class StaffService:
             db.session.commit()
         return report
     
+    @staticmethod
+    def get_all_reports():
+      return db.session.query(db.func.count(Report.id)).scalar() or 0
+    
     #admin
 
     @staticmethod
