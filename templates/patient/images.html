@@ -1,0 +1,48 @@
+{% extends "patient/layout.html" %}
+
+{% block content %}
+<h2 class="page-title">My Medical Images</h2>
+
+<div class="image-grid">
+    {% for img in images %}
+    <div class="image-card">
+
+        {% if img.file_path.endswith('.pdf') %}
+
+            <!-- PDF -->
+            <div class="pdf-box">
+                <i class="fa fa-file-pdf-o pdf-icon"></i>
+                <p>Medical Scan (PDF)</p>
+
+                <a href="{{ img.file_path }}"
+                   target="_blank"
+                   class="btn view-btn">
+                    View PDF
+                </a>
+
+                <a href="{{ img.file_path }}"
+                   download
+                   class="btn download-btn">
+                    Download
+                </a>
+            </div>
+
+        {% else %}
+
+            <!-- Image -->
+            <img src="{{ img.file_path }}"
+                 alt="Medical Image"
+                 class="scan-image">
+
+        {% endif %}        
+        <p class="timestamp">
+            {{ img.timestamp.strftime('%Y-%m-%d %H:%M') }}
+        </p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if images|length == 0 %}
+<p class="empty">No images uploaded yet.</p>
+{% endif %}
+{% endblock %}

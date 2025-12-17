@@ -1,0 +1,30 @@
+{% extends "patient/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Diagnosis Reports</h2>
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Report</th>
+        <th>Diagnosis</th>
+        <th>Status</th>
+        <th>Date</th>
+    </tr>
+
+    {% for r in reports %}
+    <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.report_text }}</td>
+        <td>{{ r.diagnosis }}</td>
+        <td>{{ r.status }}</td>
+        <td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if reports|length == 0 %}
+<p class="empty">No reports available.</p>
+{% endif %}
+
+{% endblock %}

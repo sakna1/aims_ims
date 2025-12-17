@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+
+<div class="outer-card">
+    <h2>Login</h2>
+
+    <div class="inner-card">
+        <form method="POST" onsubmit="return validateLogin()">
+
+            <label>Username</label>
+            <input type="text" name="username" id="username">
+
+            <label>Password</label>
+            <input type="password" name="password" id="password">
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
+<!-- SERVER SIDE ERROR POPUP -->
+{% if error %}
+<script>
+    window.onload = function () {
+        alert("Incorrect username or password");
+    }
+</script>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'finance/layout.html' %}
+
+{% block content %}
+<h2>All Patients Billing Summary</h2>
+
+<table>
+    <tr>
+        <th>Patient ID</th>
+        <th>Total Cost (LKR)</th>
+        <th>View Details</th>
+    </tr>
+
+    {% for p in patients %}
+    <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.total_cost }}</td>
+        <td>
+            <a href="{{ url_for('billing_bp.view_patient_billing', patient_id=p.id) }}">
+                View Billing
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

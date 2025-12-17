@@ -1,0 +1,32 @@
+{% extends "admin/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">{{ 'Edit' if staff else 'Add' }} Staff Member</h2>
+
+<form method="POST" class="form-container">
+
+    <label>Username</label>
+    <input type="text" name="username" value="{{ staff.username if staff else '' }}" required>
+
+    <label>Full Name</label>
+    <input type="text" name="full_name" value="{{ staff.full_name if staff else '' }}" required>
+
+    <label>Email</label>
+    <input type="email" name="email" value="{{ staff.email if staff else '' }}">
+
+    <label>Role</label>
+    <select name="role" required>
+        <option value="">Select Role</option>
+        <option value="doctor" {{ 'selected' if staff and staff.role=='doctor' else '' }}>Doctor</option>
+        <option value="radiologist" {{ 'selected' if staff and staff.role=='radiologist' else '' }}>Radiologist</option>       
+        <option value="admin" {{ 'selected' if staff and staff.role=='admin' else '' }}>Admin</option>
+        <option value="finance" {{ 'selected' if staff and staff.role=='finance' else '' }}>Finance</option>
+    </select>
+
+    <label>Password {{ '(Leave blank to keep same)' if staff else '' }}</label>
+    <input type="password" name="password">
+
+    <button class="btn" type="submit">Save</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'finance/layout.html' %}
+
+{% block content %}
+<h2>Add Billing Record</h2>
+
+<form method="POST">
+
+    <label>Patient</label>
+    <select name="patient_id" required>
+        <option value="">Select Patient</option>
+        {% for patient in patients %}
+            <option value="{{ patient.id }}">
+                {{ patient.id }} - {{ patient.first_name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Task Name</label>
+    <select name="task_name" required>
+        <option value="">Select Type</option>
+        {% for cat in categories %}
+            <option value="{{ cat.name }}">{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Cost Amount (LKR)</label>
+    <input type="number" step="0.01" name="cost_amount" required>
+
+    <button type="submit">Add Record</button>
+</form>
+
+{% endblock %}

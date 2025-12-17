@@ -1,0 +1,40 @@
+{% extends "radiologist/layout.html" %}
+{% block content %}
+
+<h2>Select an Image to Create a Report</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image ID</th>
+            <th>Patient</th>
+            <th>Preview</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for img in images %}
+        <tr>
+            <td>{{ img.id }}</td>
+            <td>{{ img.patient.first_name }} {{ img.patient.last_name }}</td>           
+            <td>
+                {% if img.file_path.endswith('.pdf') %}
+                    <a href="{{ img.file_path }}" target="_blank" class="btn btn-sm">
+                        View PDF
+                    </a>
+                {% else %}
+                    <img src="{{ img.file_path }}" class="thumb">
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('staff_bp.create_report', image_id=img.id) }}" class="btn">
+                    Create Report
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

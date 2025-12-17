@@ -1,0 +1,32 @@
+from ims.models.user import User
+from ims.models.patient import Patient
+from werkzeug.security import check_password_hash
+from flask import session
+
+class AuthService:
+
+    from ims.models.user import User
+from ims.models.patient import Patient
+from werkzeug.security import check_password_hash
+
+class AuthService:
+
+    @staticmethod
+    def authenticate(username, password):
+        # 1. Check User table
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password_hash, password):
+            return user
+
+        # 2. Check Patient table
+        patient = Patient.query.filter_by(username=username).first()
+        if patient and check_password_hash(patient.password_hash, password):
+            patient.role = "patient"  # Assign role for session
+            return patient
+
+        return None
+    
+    def logout():
+        """Clear session and log out user."""
+        session.clear()
+        return True

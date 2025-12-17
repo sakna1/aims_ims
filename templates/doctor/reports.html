@@ -1,0 +1,55 @@
+{% extends "doctor/layout.html" %}
+{% block content %}
+
+<h2 class="page-title">Radiology Reports</h2>
+
+<form method="GET" action="{{ url_for('staff_bp.doctor_view_reports') }}" class="search-form">
+    <input type="text" name="query" placeholder="Search patient by ID or Name" required>
+    <button type="submit">Search</button>
+</form>
+
+{% if patient %}
+<h3>Patient: {{ patient.first_name }}</h3>
+{% endif %}
+
+<table class="table">
+    <tr>       
+        <th>Report Text</th>
+        <th>Disease Type</th>
+        <th>Diagnosis</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for r in reports %}
+    <tr>
+       
+        <td>{{ r.report_text }}</td>
+
+        <form method="POST" action="{{ url_for('staff_bp.doctor_update_report', report_id=r.id) }}">
+            
+            <td>
+                <input type="text" name="disease_type" value="{{ r.disease_type or '' }}" placeholder="Enter disease type">
+            </td>
+
+            <td>
+                <textarea name="diagnosis" rows="2" placeholder="Add diagnosis...">{{ r.diagnosis or '' }}</textarea>
+            </td>
+
+            <td>
+                <select name="status">
+                    <option value="Draft" {% if r.status=='Draft' %}selected{% endif %}>Draft</option>
+                    <option value="Confirmed" {% if r.status=='Confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="Reviewed" {% if r.status=='Reviewed' %}selected{% endif %}>Reviewed</option>
+                </select>
+            </td>
+
+            <td><button type="submit" class="btn-save">Save</button></td>
+
+        </form>
+
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

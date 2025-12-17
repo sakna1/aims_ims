@@ -1,0 +1,86 @@
+/* NAVBAR */
+.navbar {
+    background-color: #0a3d62;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* MAIN WRAPPER */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* TITLES */
+h2 {
+    margin-bottom: 20px;
+    color: #0a3d62;
+}
+
+/* FORMS */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input, form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #0a3d62;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #07416d;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th, table td {
+    border: 1px solid #dcdcdc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background: #0a3d62;
+    color: white;
+}

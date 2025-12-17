@@ -1,0 +1,29 @@
+/* ===== INDEX PAGE CSS ===== */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef3f8;
+    text-align: center;
+    padding-top: 120px;
+    margin: 0;
+}
+
+h1 {
+    color: #222;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+a {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+a:hover {
+    background: #004c99;
+}
