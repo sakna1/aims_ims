@@ -19,6 +19,7 @@ def admin_required(f):
     return wrapper
 
 @admin_bp.route("/dashboard")
+@admin_required
 def dashboard():
     # Check if user is logged in and is admin
     if "role" not in session or session["role"] != "admin":
